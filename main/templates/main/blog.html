@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+ <html>
+ <head>
+     <meta charset='utf-8'>
+
+     <title>Page Title</title>
+     <link rel = "stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+<html>
+    <head>
+        <title>Blog List</title>
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+          <div class="container">
+              <a class="navbar-brand" href="{% url 'blog' %}"><a>BOARD</a>
+          </div>
+        </nav>
+        {% block GeT %}
+       {% endblock %}
+        <table>
+        {% for list in postlist %}
+            <!-- 게시글 클릭시 세부페이지로 넘어갑니다-->
+            <ul>
+                <li><a href="{{list.pk}}/">{{list.postname}}</a></li>
+            </ul>
+        {% endfor %}
+        <button><a href="new_post/">글쓰기</a></button>
+        </table>
+    </body>
+</html>
