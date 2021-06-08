@@ -9,4 +9,5 @@ urlpatterns = [
     path('',index),
     path('blog/',blog),
     path('blog/new_post/', new_post),
+    path('post', views.post, name='post')
 ]

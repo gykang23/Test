@@ -1,31 +1,64 @@
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
- <html>
- <head>
-     <meta charset='utf-8'>
+    {% block content %}
+        <div class="row mt-5">
+          <div class="col-12">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">제목</th>
+                  <th scope="col">아이디</th>
+                  <th scope="col">작성일</th>
+                </tr>
+              </thead>
 
-     <title>Page Title</title>
-     <link rel = "stylesheet" href="{% static 'css/bootstrap.min.css'%}">
-<html>
-    <head>
-        <title>Blog List</title>
-    </head>
-    <body>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-          <div class="container">
-              <a class="navbar-brand" href="{% url 'blog' %}"><a>BOARD</a>
+              <tbody>
+                {% for post in postlist %}
+
+                <tr class="text-center">
+                  <th scope="row">
+                    <span>{{ post.num }}</span>
+                  </th>
+                  <td>
+                    <a href="/blog/{{ post.id }}">
+                      <span>{{ post.postname }}</span>
+                    </a>
+                  </td>
+                  <td>
+                    <span>{{ post.author }}</span>
+                  </td>
+                  <td>
+                    <span>{{ post.created_date | date:"Y-m-d h:i" }}</span>
+                  </td>
+                </tr>
+                <!-- <tr>
+                <a herf="{% url 'main:posting' post.pk %}">
+                      <td>{{post.id}}</td>
+                      <td>{{post.author}}</td>
+                      <td>{{post.postname}}</td>
+                      <td>{{post.created_date}}</td>
+</a>
+</tr>
+              </tr> -->
+              {% endfor %}
+                </tbody>
+            </table>
           </div>
-        </nav>
-        {% block GeT %}
+        </div>
        {% endblock %}
-        <table>
-        {% for list in postlist %}
+
+
             <!-- 게시글 클릭시 세부페이지로 넘어갑니다-->
-            <ul>
-                <li><a href="{{list.pk}}/">{{list.postname}}</a></li>
-            </ul>
-        {% endfor %}
-        <button><a href="new_post/">글쓰기</a></button>
-        </table>
+            <!-- <ul>
+              <a href="{{list.pk}}/">
+                <li>{{list.id}}</li>      {{list.author}}       {{list.postname}}     {{list.created_date}}
+                </a>
+              </li>
+
+            </ul> -->
+
+        <!-- <button><a href="new_post/">글쓰기</a></button> -->
+
     </body>
 </html>

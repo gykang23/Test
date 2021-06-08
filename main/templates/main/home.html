@@ -1,3 +1,4 @@
+<!-- {% extends 'blog.html' %}
 {% load static %}
  <!DOCTYPE html>
  <html>
@@ -12,10 +13,29 @@
  <body>
      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
          <div class="container">
-             <a class="navbar-brand" href="{% url 'blog' %}">BOARD</a>
+           <a class="navbar-brand" href="{% 'home' %}"><b>BOARD</b> </a>
          </div>
      </nav>
+     {% block boardhead %}
+         <table class="table">
+             <thead  class="thead-inverse">
+                 <tr>
+                     <th>index</th>
+                     <th>제목</th>
+                     <th>조회수</th>
+                     <th>작성자</th>
+                     <th>댓글수</th>
+                     <th>작성일자</th>
+                 </tr>
+             </thead>
+         </table>
+         <div class="container">
+        {% block content %}<!-- 이제 이부분에 content라는 이름으로 이어받아서 작성할수 있습니다. -->
+        <!-- {% endblock %}
+    </div>
+
+     {% endblock %}
 
  </body>
 
- </html>
+ </html> --> -->

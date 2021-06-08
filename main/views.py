@@ -1,9 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Post
 
 # Create your views here.
 def index(request):
     return render(request,'main/index.html')
+
 # def blog(request):
 #     return render(request, 'main/blog.html')
 def blog(request):
@@ -15,9 +17,14 @@ def blog(request):
 # blog의 게시글(posting)을 부르는 posting 함수
 def posting(request, pk):
     # 게시글(Post) 중 pk(primary_key)를 이용해 하나의 게시글(post)를 검색
+     #post = Post.objects.get(pk=pk)
+    # # posting.html 페이지를 열 때, 찾아낸 게시글(post)을 post라는 이름으로 가져옴
+    # return render(request, 'main/posting.html', {'post':post})
+    post = {'post': Post.objects.all()}
     post = Post.objects.get(pk=pk)
-    # posting.html 페이지를 열 때, 찾아낸 게시글(post)을 post라는 이름으로 가져옴
-    return render(request, 'main/posting.html', {'post':post})
+    return render(request, 'main/posting.html',{'post':post})
+
+
 def new_post(request):
     if request.method == 'POST':
         if request.POST['mainphoto']:
@@ -25,13 +32,22 @@ def new_post(request):
                 postname=request.POST['postname'],
                 contents=request.POST['contents'],
                 mainphoto=request.POST['mainphoto'],
+                created_date=request.POST['created_date'],
+                author=request.POST['author'],
+
             )
         else:
             new_article=Post.objects.create(
                 postname=request.POST['postname'],
                 contents=request.POST['contents'],
                 mainphoto=request.POST['mainphoto'],
+                created_date=request.POST['created_date'],
+                author=request.POST['author'],
+
             )
+            return HttpResponseRedirect(reverse('blog'))
+    else:
+        return render(request, 'main/posting.html')
         return redirect('/blog/')
     return render(request, 'main/new_post.html')
 def remove_post(request, pk):

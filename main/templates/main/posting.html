@@ -1,9 +1,13 @@
+{% extends "main/base.html" %}
+{% load static %}
 <html>
     <head>
         <title>Posting!</title>
     </head>
     <body>
-        <h1>게시글 개별 페이지입니다</h1>
+      {% block content %}
+
+        <h1>게시글</h1>
         <p>{{post.postname}}</p>
         <p>{{post.contents}}</p>
         <!-- 이미지 보여주기 -->
@@ -13,5 +17,6 @@
         {% endif %}
         <a href="/blog/">목록</a>
         <a href="/blog/{{post.pk}}/remove">삭제</a>
+  {% endblock %}
     </body>
 </html>
