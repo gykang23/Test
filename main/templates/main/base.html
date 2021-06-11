@@ -1,36 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
+<!DOCTYPE html>
  <html>
  <head>
      <meta charset='utf-8'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>TESTLIST</title>
      <link rel = "stylesheet" href="{% static 'css/bootstrap.min.css'%}">
-     <link rel = "stylesheet" href="{% static 'css/album.css'%}">
-        <div class="collapse bg-dark" id="navbarHeader">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-8 col-md-7 py-4">
-                <!-- <h4 class="text-white">About</h4> -->
-                <p class="text-muted">
-            </div>
-          </div>
+
+
+          <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+              <a class="navbar-brand" href="/blog/">Test</a>
+              <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+                  <ul class="navbar-nav">
+
+          <li class="nav-item ">
+                <li><a class="nav-link" href="/blog/">취업계시판</a></li>
+                <li><a class="nav-link" href="#">교육정보</a></li>
+                <li><a class="nav-link" href="#">대외활동</a></li>
+            </li>
+
+          </ul>
         </div>
-      </div>
-      <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            <strong>test</strong>
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-      </div>
+      </nav>
+
     </header>
      <link rel="stylesheet" href="{% static 'css/app.css' %}">
      <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
+
     <head>
         <title>Blog List</title>
     </head>
@@ -40,11 +41,14 @@
 
         <section class="jumbotron text-center">
           <div class="container">
-            <h1 class="jumbotron-heading">디자인예></h1>
-            <p class="lead text-muted">  </p>
             {% block content %}
              {% endblock %}
 
+            <p class="lead text-muted">  </p>
+
+
           </div>
         </section>
+        <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>

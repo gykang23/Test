@@ -1,3 +1,6 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +8,21 @@
     <title>Title</title>
 </head>
 <body>
-    메인 로그인 페이지 입니다
+    메인 페이지 입니다
+    (사진 예정 )
+
+    <div class="row mt-2">
+  <div class="col-12">
+    <button type="button" class="btn btn-secondary btn-lg btn-block"
+    onclick="location.href='/blog/'">
+    <h1>  Start크기조정 예정</h1>
+    </button>
+    <button type="button" class="btn btn-secondary btn-lg btn-block"
+    onclick="location.href='/login/'">
+    <h1>  Login크기조정 예정</h1>
+    </button>
+  </div>
+</div>
 </body>
 </html>
+{% endblock %}

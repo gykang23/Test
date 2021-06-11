@@ -5,7 +5,7 @@ from .models import Post
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display=('id','postname','author','created_date')
+    list_display=('rogophoto','id','postname','author','write','created_date')
 
 
 # 관리자(admin)가 게시글(Post)에 접근 가능
