@@ -2,9 +2,45 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Post
 from django.core.paginator import Paginator
-
-
+from django.db.models import Q
+# from django.shortcuts import render
 # Create your views here.
+
+def search(request):
+    posts = Post.objects.all().order_by('-id')
+
+    q = request.POST.get('q', "")
+
+    if q:
+        posts = posts.filter(
+
+        Q(postname__icontains=q) |
+        Q(author__icontains=q)
+        )
+        return render(request, 'main/search.html', {'posts' : posts, 'q' : q})
+
+    else:
+        return render(request, 'main/search.html')
+
+# def post_list(request):
+#     postlist  = Post.objects.all().order_by('-id')
+#
+#     search_key = request.GET.get('search_key')
+#     if search_key: # 만약 검색어가 존재하면
+#         post_list = post_list.filter( # 해당 검색어를 포함한 queryset 가져오기
+#             Q(postname__icontains=search_key) |  # 제목검색
+#             Q(write__icontains=search_key)
+#             ).distinct()
+#     return render(request, 'main/post_list.html', {'post_list':post_list})
+#      post = Post.objects.filter(
+#         Q(postname=kw) |  # 제목검색
+#         Q(write=kw)   # 내용검색
+# ).distinct()
+
+
+
+
+
 def index(request):
     return render(request,'main/index.html')
 
@@ -20,6 +56,14 @@ def blog(request):
     postlist  = pagenator.get_page(page)
     #postlist = Post.objects.all()
     return render(request, 'main/blog.html', {'postlist':postlist})
+
+    postlist  = Post.objects.all().order_by('-id')
+
+    search_key = request.GET.get('search_key')
+    if search_key: # 만약 검색어가 존재하면
+        post_list = post_list.filter(wtite__icontains=search_key) # 해당 검색어를 포함한 queryset 가져오기
+
+    return render(request, 'main/blog.html', {'blog':blog})
 
 def posting(request, pk):
     post = {'post': Post.objects.all()}

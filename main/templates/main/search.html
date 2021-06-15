@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+    {% if not posts %}
+
+        <h1>검색 결과가 없습니다</h1>
+
+    {% else %}
+    {% for post in posts.all %}
+       <div class="container">
+           <div class="card">
+               <div class="card-body">
+                 
+               <th width = "100">
+                     {% if post.rogophoto %}
+                   <img src = "{{ post.rogophoto.url }}" alt="" height ="140" width="140">
+                   {% endif %}
+                   <a href="/blog/{{ post.id }}">
+                 <span>{{ post.num }}</span>
+                 <span>{{ post.postname|truncatechars:30}}</span>
+                 <br>
+                 <span>{{ post.author }}</span>
+                 <br>
+                 <span>{{ post.write }}</span>
+                 <br>
+                 <span>{{ post.created_date | date:"Y-m-d h:i" }}</span>
+
+               </div>
+           </div>
+       </div>
+       <br>
+       {% endfor %}
+    {% endif %}
+
+{% endblock %}
