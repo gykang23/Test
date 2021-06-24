@@ -5,6 +5,7 @@ class Post(models.Model):
     rogophoto = models.ImageField(blank=True, null=True, verbose_name='회사사진')
     postname = models.CharField(max_length=50, verbose_name='제목')
     author = models.CharField(max_length=10, null=True,  verbose_name='작성')
+    jop = models.CharField(max_length=50,null=True, verbose_name='직업')
     mainphoto = models.ImageField(blank=True, null=True, verbose_name='사진첨부')
     write = models.TextField(verbose_name='세부내용',null=True,)
     contents = models.TextField(verbose_name='내용')

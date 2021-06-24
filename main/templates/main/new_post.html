@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기 페이지</title>
+</head>
+<body>
+    <h1>글쓰기 페이지</h1>
+    <form method="POST">
+        {% csrf_token %}
+        로고사<br>
+        <input type="file" name="rogophoto"><br>
+        제목<br>
+        <input type="text" name="postname"><br>
+        직종<br>
+        <input type="text" name="jop"><br>
+        내용<br>
+        <textarea rows="10" cols="50" name="contents"></textarea><br>
+        <input type="file" name="mainphoto"><br>
+        세부내용<br>
+        <input type="text" name="write"><br>
+        지역<br>
+        <input type="text" name="author"><br>
+        <input type="submit" value="글쓰기">
+    </form>
+</body>
+</html>
+{% endblock %}

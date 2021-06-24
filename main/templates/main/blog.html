@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{%extends "main/base.html"%}
 {% load static %}
 {% block content %}
 <!-- <style>
@@ -29,11 +29,61 @@
               <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
           </div>
       </div>
+
   </div> -->
-  <form class="form-inline my-2 my-lg-0" action="{% url 'main:search' %}" method="post">
+
+
   {% csrf_token %}
-  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q" value="{{q}}">
+   <style>
+
+    input[type="checkbox"] {
+        display: none;
+    }
+    label {
+        display: inline-block;
+        border-radius: 20px;
+        text-align: center;
+        text-decoration: none;
+        border: solid 1px #ccc;
+        transition: 0.25s;
+        padding: 6px 18px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 3px;
+      }
+      input[type="checkbox"]:checked + label {
+       background: #00809d;
+       color: #fff;
+     }
+</style>
+<form class="form-inline my-2 my-lg-0" action="{% url 'main:search' %}" method="post">
+   {% csrf_token %}
+<ul id="id_tags">
+
+  <input type="checkbox" name="tags" value="IT" id="id_tags_0">
+  <label for="id_tags_0">IT( {{jop_count}} ) </label>
+
+
+  <input type="checkbox" name="tags" value="숙박" id="id_tags_1">
+  <label for="id_tags_1">숙박</label>
+
+  <input type="checkbox" name="tags" value="현장" id="id_tags_2">
+  <label for="id_tags_2">현장</label>
+
+</ul>
+
+      <!-- <div class = "jop">
+            <p>jop</p>2
+            <label><input type="checkbox" name="jop" value="IT"> IT</label>
+            <label><input type="checkbox" name="jop" value="숙박"> 숙박</label>
+            <label><input type="checkbox" name="jop" value="현장">현장</label>
+          </div> -->
+
+
+
+  <input class="form-control mr-sm-2" type="search" placeholder="" aria-label="Search" name="q" value="{{q}}" >
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
   </form>
         <div class="row mt-5">
           <div class="col-12">
@@ -65,6 +115,8 @@
                     <br>
                     <span>{{ post.author }}</span>
                     <br>
+                    <span>{{ post.jop }}</span>
+                    <br>
                     <span>{{ post.write }}</span>
                     <br>
                     <span>{{ post.created_date | date:"Y-m-d h:i" }}</span>
@@ -77,6 +129,8 @@
           </div>
         </div>
         <div class="row mt-2">
+
+          <button><a href="new_post/">글쓰기</a></button>
     <div class="col-12">
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -96,7 +150,6 @@
         <li class="page-item"><a class="page-link" href="?p=2">2</a></li>
         <li class="page-item"><a class="page-link" href="?p=3">3</a></li>
       </ul>
-
           </li>
           {% if postlist.has_next %}
           <li class="page-item">
@@ -106,6 +159,8 @@
           <li class="page-item disabled">
             <a class="page-link" href="#">Next</a>
           </li>
+
+
           {% endif %}
         </ul>
       </nav>
