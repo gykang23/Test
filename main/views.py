@@ -11,23 +11,21 @@ from django.views.generic import ListView
 def search(request):
     posts = Post.objects.filter().order_by('-id')
     tags = request.POST.getlist('tags',None)
-
+    kw = request.POST.get('kw','')
 
     # q = request.POST.get('q','')
-
+    if kw:
+        posts = posts.filter(Q(postname=kw)|Q(author=kw)|Q(jop=kw))
+    return render(request, 'main/search.html', {'posts' : posts, 'kw' : kw})
 
 
     q = Q()
     if tags:
         q.add (Q(jop__in=tags),Q.AND)
         posts = posts.filter(jop__in=tags)
-    #     posts = posts.filter(Q(jop__icontains=tags))
+
     return render(request, 'main/search.html', {'posts' : posts, 'tags' : tags})
-    # if jop:
-    #     posts = posts.filter(Q(jop__icontains=tags)&Q(jop__icontains=tags))
-    #     return render(request, 'main/search.html', {'posts' : posts, 'jop' : jop})
-# else :
-#         return render(request, 'main/search.html')
+
 
 
 def tags(request):
