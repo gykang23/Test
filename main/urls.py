@@ -5,13 +5,16 @@ from . import views
 from main.views import index, blog, posting, remove_post, login, new_post
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 
 
 app_name='main'
 
 urlpatterns = [
     path('',index),
-    path('login/',login),
+    path('login/', auth_views.LoginView.as_view(template_name='main/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('signup/', views.signup, name='signup'),
     path('blog/',blog),
     path('admin/', admin.site.urls),
     path('blog/new_post/', new_post),

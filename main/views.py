@@ -1,42 +1,76 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login as dj_login
+from django.shortcuts import render, redirect
 from .models import Post
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Sum
 from django.shortcuts import render
 from django.views.generic import ListView
+from main.forms import UserForm
+
+
+def signup(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            dj_login(request, user)
+            return redirect('main/index')
+    else:
+        form = UserForm()
+    return render(request, 'main/signup.html', {'form': form})
+
+
 
 
 
 def search(request):
-    posts = Post.objects.filter().order_by('-id')
+    posts = Post.objects.all().order_by('-id')
     tags = request.POST.getlist('tags',None)
     kw = request.POST.get('kw','')
 
     # q = request.POST.get('q','')
+    q = Q()
+
     if kw:
         posts = posts.filter(Q(postname=kw)|Q(author=kw)|Q(jop=kw))
-    return render(request, 'main/search.html', {'posts' : posts, 'kw' : kw})
-
-
-    q = Q()
-    if tags:
-        q.add (Q(jop__in=tags),Q.AND)
+        if tags:
+            q.add(Q(jop__in=tags), Q.AND)
+            posts = posts.filter(jop__in=tags)
+            return render(request, 'main/search.html', {'posts' : posts, 'tags' : tags})
+        return render(request, 'main/search.html', {'posts': posts, 'kw': kw})
+    elif tags:
+        q.add(Q(jop__in=tags), Q.AND)
         posts = posts.filter(jop__in=tags)
-
-    return render(request, 'main/search.html', {'posts' : posts, 'tags' : tags})
-
+        return render(request, 'main/search.html', {'posts': posts, 'tags': tags})
 
 
-def tags(request):
-    jop = request.POST.get('',None)
-    jop_count  = Post.objects.filter(jop=IT).aggregate(sum('jop'))
-    pots.stories_filed += 1
-    posts.save()
-
-    return render(request, 'main/blog.html',{'jop_count': jop_count})
+    # else:
+    #     return render(request, 'main/search.html', {'posts' : posts})
 
 
+
+    # if kw is not None and tag is not None:
+    #
+    #     q.add (Q(jop__in=tags),Q.)
+    #     posts = posts.filter(Q(postname=kw)|Q(author=kw)|Q(jop=kw))
+    #
+    # return render(request, 'main/search.html', {'posts' : posts})
+    #
+
+
+# def tags(request):
+#     jop = request.POST.get('',None)
+#     jop_count  = Post.objects.filter(jop).aggregate(sum('jop'))
+#     pots.stories_filed += 1
+#     posts.save()
+#
+#     return render(request, 'main/blog.html',{'jop_count': jop_count})
+#
+#
 
 
 def index(request):
