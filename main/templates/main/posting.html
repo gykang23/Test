@@ -19,6 +19,14 @@
         {% endif %}
         <a href="/blog/">목록</a>
         <a href="/blog/{{post.pk}}/remove">삭제</a>
-  {% endblock %}
+        <input type="button" value="지원하기">
+        <input type="button" value="문의하기" onclick="showPopup();">
+        <script>
+            function showPopup(){
+                window.open("/chat/chatting","a","width=500,height=650");
+            }
+        </script>
+      {% endblock %}
     </body>
+
 </html>

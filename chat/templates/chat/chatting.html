@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Chat</title>
+        <style>
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                background-color: lightblue;
+            }
+
+            #wrap {
+                width: 100%;
+                height: 100%;
+                overflow: scroll;
+                background-color: lightblue;
+            }
+
+            #chatWrap {
+                width: 600px;
+                height: 800px;
+                margin: auto;
+                border: 1px solid gray;
+                background-color: white;
+            }
+
+            #chatView {
+                width: 100%;
+                height: 90%;
+                overflow-x: hidden;
+                overflow-y: scroll;
+            }
+
+            .system {
+                width: 100%;
+                text-align: center;
+                font-size: large;
+                color: darkgray;
+            }
+
+            .chatLine {
+                height: auto;
+                padding: 10px;
+                overflow: hidden;
+                text-align: left;
+            }
+
+            .nick {
+                display: block;
+                margin-left: 1%;
+                font-size: large;
+                font-weight: bold;
+                color: gray;
+            }
+
+            .chatLog {
+                max-width: 60%;
+                height: 100%;
+                padding: 10px;
+                border-radius: 20px;
+                display: inline-block;
+                word-break: break-all;
+                font-size: large;
+                background-color: lightgray;
+            }
+
+            .me {
+                float: right;
+                background-color: lightblue;
+            }
+
+            #sendForm {
+                height: 10%;
+                padding: 5px;
+                border-top: 1px solid gray;
+                text-align: center;
+            }
+
+            #name {
+                width: 20%;
+                height: 50px;
+                font-size: 20px;
+                border-radius: 8px;
+            }
+
+            #message {
+                width: 80%;
+                height: 50px;
+                font-size: 20px;
+                border-radius: 8px;
+            }
+
+            #send {
+                width: 16%;
+                height: 60px;
+                border-radius: 50px;
+                background-color: lightblue;
+            }
+        </style>
+    </head>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="chatWrap">
+            <div id="chatView"></div>
+            <form id="sendForm" onsubmit="return false">
+                <input type="text" id="message" placeholder="메시지를 입력하세요." autocomplete="off">
+                <input type="submit" id="send" value="전송">
+            </form>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        function getName(names) {
+            while (true) {
+                const input = prompt("닉네임을 입력하세요.\n(2자 이상 6자 이하)");
+                const uniqueCondition = names.indexOf(input) === -1;
+                const lengthCondition = input && input.length <= 6 && input.length >= 2;
+
+                if (!uniqueCondition) {
+                    alert("중복된 닉네임입니다.")
+                } else if (!lengthCondition) {
+                    alert("조건을 지켜 입력해주세요.");
+                } else {
+                    return input;
+                }
+            }
+        }
+
+        function drawUserEnterAlert(name) {
+            const html = `
+                <div class="system">
+                    ${name}님이 들어왔습니다.
+                </div>`;
+
+            $("#chatView").append(html).scrollTop($("#chatView")[0].scrollHeight);
+        }
+
+        function drawMessage(name, message) {
+            const html = `
+                <div class="chatLine">
+                    <label class="nick">${name}</label>
+                    <div class="chatLog">
+                        ${message}
+                    </div>
+                </div>`;
+
+            $("#chatView").append(html).scrollTop($("#chatView")[0].scrollHeight);
+        }
+
+        function drawMyMessage(message) {
+            const html = `
+                <div class="chatLine">
+                    <div class="chatLog me">
+                        ${message}
+                    </div>
+                </div>`;
+
+            $("#chatView").append(html).scrollTop($("#chatView")[0].scrollHeight);
+            $("#message").val("");
+        }
+
+        function drawUserExitAlert(name) {
+            const html = `
+                <div class="system">
+                    ${name}님이 나갔습니다.
+                </div>`;
+
+            $("#chatView").append(html).scrollTop($("#chatView")[0].scrollHeight);
+        }
+
+        $(document).ready(() => {
+            const ws = new WebSocket("ws://localhost:8000/chat");
+            let name;
+
+            ws.onopen = (e) => {
+                const data = {
+                    type: "names"
+                };
+
+                ws.send(JSON.stringify(data));
+            };
+
+            ws.onmessage = (e) => {
+                const { type, data } = JSON.parse(e.data);
+
+                if (type === "names") {
+                    name = getName(data);
+
+                    ws.send(JSON.stringify({
+                        type: "connect",
+                        data: {
+                            name
+                        }
+                    }));
+                    drawUserEnterAlert(name);
+                } else if (type === "connect") {
+                    drawUserEnterAlert(data.name);
+                } else if (type === "message") {
+                    drawMessage(data.name, data.message);
+                } else if (type === 'disconnect') {
+                    drawUserExitAlert(data.name);
+                }
+            };
+
+            $("#sendForm").submit(() => {
+                const message = $("#message").val();
+
+                if (message.length > 0) {
+                    const data = {
+                        type: "message",
+                        data: {
+                            name,
+                            message
+                        }
+                    };
+
+                    ws.send(JSON.stringify(data));
+                    drawMyMessage(message);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

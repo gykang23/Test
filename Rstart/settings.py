@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure--9-9m3p=kin5pqgvc(-vy0wn=-s!gxhj!n4_k1uldkrull0e%5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.19']
 
 
 # Application definition
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'chat',
+    'channels',
 
 ]
 
@@ -73,11 +75,20 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Rstart.wsgi.application'
+WSGI_APPLICATION = 'Rstart.routing.application'
 
 #
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+# Channels
+ASGI_APPLICATION = 'Rstart.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+
+    }
+}
 
 DATABASES = {
     'default': {
